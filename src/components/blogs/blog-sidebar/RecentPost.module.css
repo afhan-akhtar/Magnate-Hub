@@ -1,0 +1,138 @@
+.recentBox {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+}
+
+.sidebarTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: #0f172a;
+  position: relative;
+  padding-bottom: 6px;
+  margin: 10px;
+}
+
+.sidebarTitle::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 36px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #560ce3, #9f6bff);
+}
+
+.loadingWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 120px;
+}
+
+.emptyState {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.postList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* Each post row */
+
+.postItem {
+  gap: 12px;
+  text-decoration: none;
+  padding: 8px 8px;
+  border-radius: 12px;
+  transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.postItem:hover {
+  background: linear-gradient(
+      90deg,
+      rgba(86, 12, 227, 0.06),
+      rgba(255, 255, 255, 1)
+    ),
+    #f9fafb;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.thumbWrapper {
+  position: relative;
+  flex-shrink: 0;
+
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.postThumbImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+
+.postItem:hover .postThumbImage {
+  transform: scale(1.06);
+}
+
+.postContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 20px;
+}
+
+.postTitle {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  font-weight: 600;
+  margin: 0;
+  color: #0f172a;
+}
+
+.postItem:hover .postTitle {
+  color: #560ce3;
+}
+
+.postDate {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+
+.dateIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Small screens */
+
+@media (max-width: 575.98px) {
+  .recentBox {
+    padding: 18px 14px 14px;
+  }
+
+  .thumbWrapper {
+    width: 56px;
+    height: 56px;
+  }
+
+  .postTitle {
+    font-size: 0.88rem;
+  }
+}

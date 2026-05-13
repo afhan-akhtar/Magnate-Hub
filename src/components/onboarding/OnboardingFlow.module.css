@@ -1,0 +1,1203 @@
+.area {
+  --onboarding-field-height: 52px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 40px 0;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.52)),
+    url("/assets/img/banner/banner.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.shell {
+  width: min(100%, 800px);
+  margin: 0 auto;
+  padding: 38px 32px;
+  border: 1px solid var(--mh-auth-surface-border);
+  border-radius: 30px;
+  background: var(--mh-auth-surface-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: var(--mh-auth-surface-shadow);
+}
+
+.shellWide {
+  width: min(100%, 1320px);
+}
+
+.shellCompact {
+  width: min(100%, 500px);
+}
+
+.sidebar,
+.content {
+  padding: 0;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.brand,
+.sidebarTitle,
+.sidebarText,
+.progressTrack,
+.summaryCard {
+  display: none;
+}
+
+.stepList {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 12px;
+  margin-bottom: 26px;
+  padding-top: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.stepList::before,
+.stepList::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 7%;
+  right: 7%;
+  height: 2px;
+  border-radius: 999px;
+}
+
+.stepList::before {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.stepList::after {
+  right: auto;
+  width: var(--step-progress, 0%);
+  background: linear-gradient(90deg, #5a00ff 0%, #9a33ff 100%);
+}
+
+.stepList::-webkit-scrollbar {
+  display: none;
+}
+
+.stepItem {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 0;
+  min-width: 92px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  opacity: 0.9;
+}
+
+.stepItemActive,
+.stepItemComplete {
+  opacity: 1;
+}
+
+.stepNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.stepItemActive .stepNumber,
+.stepItemComplete .stepNumber {
+  background: #5f14ff;
+}
+
+.stepLabel {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.stepCaption {
+  display: none;
+}
+
+.contentHeader {
+  margin-bottom: 22px;
+}
+
+.contentHeaderCentered {
+  text-align: center;
+}
+
+.eyebrow {
+  display: none;
+}
+
+.title {
+  margin: 0 0 8px;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.description {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.roleChoiceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 26px;
+  margin-top: 6px;
+}
+
+.roleChoiceButton {
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  background: #fff;
+  color: #1b1630;
+  font-size: 12px;
+  font-weight: 700;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease,
+    color 0.2s ease;
+}
+
+.roleChoiceButton:hover,
+.roleChoiceButton:focus,
+.roleChoiceButton:active {
+  color: #1b1630;
+}
+
+.roleChoiceButtonActive {
+  border-color: transparent;
+  background: linear-gradient(90deg, #5a00ff 0%, #7d12ff 100%);
+  color: #fff;
+}
+
+.roleChoiceButtonActive:hover,
+.roleChoiceButtonActive:focus,
+.roleChoiceButtonActive:active {
+  color: #fff;
+}
+
+.contentBody {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.roleFooterActions {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.roleBackRow {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 26px;
+}
+
+.roleGrid,
+.planGrid,
+.questionList {
+  display: grid;
+  gap: 14px;
+}
+
+.roleGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.planGrid {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.planToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.planToolbarText {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.planNav {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.planNavButton {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.planNavButton:hover,
+.planNavButton:focus,
+.planNavButton:active {
+  background: rgba(95, 20, 255, 0.38);
+  color: #fff;
+}
+
+.planSwiper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.planSlide {
+  height: auto;
+}
+
+.questionList {
+  grid-template-columns: 1fr;
+}
+
+.roleCard,
+.planCard,
+.questionCard {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.roleCard,
+.planCard {
+  padding: 22px;
+}
+
+.questionCard {
+  padding: 16px;
+}
+
+.roleCard:hover,
+.planCard:hover,
+.optionButton:hover {
+  transform: translateY(-1px);
+}
+
+.planCard {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  min-height: 100%;
+  height: 100%;
+  min-height: 440px;
+}
+
+.planCard:hover,
+.planCard:focus,
+.planCard:focus-visible,
+.planCard:active {
+  color: #fff;
+  outline: none;
+}
+
+.roleCardActive,
+.planCardActive {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: rgba(106, 20, 218, 0.18);
+}
+
+.roleBadge,
+.recommendedTag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 22px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.recommendedTag {
+  background: rgba(95, 20, 255, 0.4);
+}
+
+.roleTitle,
+.planTitle,
+.questionTitle,
+.summaryTitle {
+  margin: 10px 0 8px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.roleTitle,
+.planTitle,
+.summaryTitle {
+  font-size: 16px;
+}
+
+.questionTitle {
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.roleDescription,
+.planDescription,
+.summaryText,
+.helperText {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.planDescriptionWrap {
+  display: grid;
+  justify-items: flex-start;
+  gap: 6px;
+}
+
+.planDescriptionCollapsed {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.readMoreButton {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.readMoreButton:hover,
+.readMoreButton:focus,
+.readMoreButton:active {
+  color: #fff;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 14px;
+  align-items: start;
+}
+
+.signupForm {
+  display: grid;
+  gap: 0;
+}
+
+.autofillTrap {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.signupFormGrid {
+  gap: 14px 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.fieldFull {
+  grid-column: 1 / -1;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.96);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.signupLabel {
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.input,
+.textarea {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid var(--mh-auth-field-border);
+  border-radius: 14px;
+  background: var(--mh-auth-field-bg);
+  box-shadow: var(--mh-auth-field-shadow);
+  color: #fff;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.input {
+  height: var(--onboarding-field-height);
+  min-height: var(--onboarding-field-height);
+  padding: 0 16px;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.signupInputGhost {
+  height: var(--onboarding-field-height);
+  min-height: var(--onboarding-field-height);
+  padding: 0 16px;
+  border: 1px solid var(--mh-auth-field-border) !important;
+  border-radius: 14px;
+  background: var(--mh-auth-field-bg) !important;
+  box-shadow: var(--mh-auth-field-shadow) !important;
+  color: #fff !important;
+  font-size: 14px;
+}
+
+.signupInputSolid {
+  height: var(--onboarding-field-height);
+  min-height: var(--onboarding-field-height);
+  padding: 0 16px;
+  border: 1px solid var(--mh-auth-field-border) !important;
+  border-radius: 14px;
+  background: var(--mh-auth-field-bg) !important;
+  box-shadow: var(--mh-auth-field-shadow) !important;
+  color: #fff !important;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.signupInputSolid::placeholder {
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.signupInputGhost::placeholder,
+.signupInputSolid::placeholder,
+.checkoutInput::placeholder,
+.checkoutTextarea::placeholder,
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(255, 255, 255, 0.68) !important;
+  opacity: 1;
+}
+
+.signupInputGhost::-webkit-input-placeholder,
+.signupInputSolid::-webkit-input-placeholder,
+.checkoutInput::-webkit-input-placeholder,
+.checkoutTextarea::-webkit-input-placeholder,
+.input::-webkit-input-placeholder,
+.textarea::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.signupInputGhost::-moz-placeholder,
+.signupInputSolid::-moz-placeholder,
+.checkoutInput::-moz-placeholder,
+.checkoutTextarea::-moz-placeholder,
+.input::-moz-placeholder,
+.textarea::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.68) !important;
+  opacity: 1;
+}
+
+.signupInputGhost:-ms-input-placeholder,
+.signupInputSolid:-ms-input-placeholder,
+.checkoutInput:-ms-input-placeholder,
+.checkoutTextarea:-ms-input-placeholder,
+.input:-ms-input-placeholder,
+.textarea:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.checkoutInput {
+  height: var(--onboarding-field-height);
+  min-height: var(--onboarding-field-height);
+  padding: 0 16px;
+  border: 1px solid var(--mh-auth-field-border) !important;
+  border-radius: 14px;
+  background: var(--mh-auth-field-bg) !important;
+  box-shadow: var(--mh-auth-field-shadow) !important;
+  color: #fff !important;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.checkoutInput::placeholder,
+.checkoutTextarea::placeholder {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.checkoutInput:-webkit-autofill,
+.checkoutInput:-webkit-autofill:hover,
+.checkoutInput:-webkit-autofill:focus,
+.checkoutTextarea:-webkit-autofill,
+.checkoutTextarea:-webkit-autofill:hover,
+.checkoutTextarea:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1000px rgba(255, 255, 255, 0.08) inset,
+    var(--mh-auth-field-shadow);
+  transition: background-color 9999s ease-out 0s;
+}
+
+.checkoutInput:-webkit-autofill {
+  height: var(--onboarding-field-height);
+  min-height: var(--onboarding-field-height);
+}
+
+.checkoutTextarea {
+  min-height: 96px;
+  padding: 14px 16px;
+  border: 1px solid var(--mh-auth-field-border) !important;
+  border-radius: 14px;
+  background: var(--mh-auth-field-bg) !important;
+  box-shadow: var(--mh-auth-field-shadow) !important;
+  color: #fff !important;
+  font-size: 14px;
+}
+
+.textarea {
+  min-height: 76px;
+  padding: 12px 16px;
+  resize: vertical;
+  font-size: 14px;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.input:focus,
+.textarea:focus,
+.otpBoxRow:focus-within {
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: var(--mh-auth-field-shadow), var(--mh-auth-field-focus);
+}
+
+.error {
+  min-height: 0;
+  margin: 4px 0 0;
+  color: #ff9da8;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.error:empty {
+  display: none;
+}
+
+.inlineFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.inlineLink,
+.linkButton {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.inlineLink:hover,
+.inlineLink:focus,
+.inlineLink:active,
+.linkButton:hover,
+.linkButton:focus,
+.linkButton:active,
+.secondaryButton:hover,
+.secondaryButton:focus,
+.secondaryButton:active {
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.actionRow {
+  display: flex;
+  justify-content: stretch;
+  margin-top: 24px;
+}
+
+.footerActions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 22px;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 20px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 700;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.primaryButton {
+  width: 100%;
+  min-width: 0;
+  background: var(--mh-auth-button-bg);
+  color: #fff;
+  box-shadow: 0 16px 36px rgba(90, 0, 255, 0.28);
+}
+
+.primaryButton:hover,
+.primaryButton:focus,
+.primaryButton:active {
+  color: #fff;
+}
+
+.rolePrimaryButton {
+  width: 100%;
+  min-width: 0;
+  min-height: 52px;
+  font-size: 14px;
+}
+
+.signupPrimaryButton {
+  width: 100%;
+  min-width: 0;
+  min-height: 52px;
+  font-size: 14px;
+}
+
+.secondaryButton {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  text-decoration: none;
+}
+
+.secondaryButton:hover,
+.secondaryButton:focus,
+.secondaryButton:active {
+  color: #fff;
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled,
+.linkButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.planHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.planPrice,
+.summaryAmount {
+  margin: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.planPrice span {
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.planList,
+.summaryList {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.planListScroll {
+  margin-top: auto;
+  height: 180px;
+  max-height: 180px;
+  width: 100%;
+  padding-right: 4px;
+  overflow-y: auto;
+}
+
+.planList li,
+.summaryList li {
+  position: relative;
+  padding-left: 14px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.planList li::before,
+.summaryList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.checkoutGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.78fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.checkoutGridCentered {
+  grid-template-columns: minmax(0, 860px);
+  justify-content: center;
+}
+
+.checkoutFormPanel,
+.checkoutSummaryPanel {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.checkoutFormPanel {
+  padding: 22px 22px 20px;
+}
+
+.checkoutSummaryPanel {
+  padding: 20px;
+}
+
+.checkoutSection {
+  display: grid;
+  gap: 14px;
+}
+
+.checkoutSection + .checkoutSection {
+  margin-top: 18px;
+}
+
+.checkoutSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.checkoutSectionTitle {
+  margin: 0;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.checkoutSecurityNote {
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.checkoutPaymentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(160px, 0.8fr);
+  gap: 12px 12px;
+}
+
+.checkoutFieldWide {
+  min-width: 0;
+}
+
+.summaryPanel,
+.messageBox {
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.summaryPanel {
+  padding: 0;
+}
+
+.summaryEyebrow {
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.secureBadge {
+  display: inline-flex;
+  margin-top: 12px;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.checkoutNotice {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.checkoutActionRow {
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.checkoutPrimaryButton {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  font-size: 13px;
+}
+
+.checkoutTermsLink {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.checkoutTermsLink:hover,
+.checkoutTermsLink:focus,
+.checkoutTermsLink:active {
+  color: #fff;
+}
+
+.messageBox {
+  padding: 12px 14px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.messageinfo {
+  background: rgba(96, 154, 255, 0.16);
+}
+
+.messagesuccess {
+  background: rgba(58, 214, 131, 0.16);
+}
+
+.messageerror {
+  background: rgba(255, 88, 88, 0.14);
+}
+
+.questionHeader {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.questionNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(95, 20, 255, 0.3);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.questionHelper {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.optionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.optionButton {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.optionButton:hover,
+.optionButton:focus,
+.optionButton:active {
+  color: #fff;
+}
+
+.optionButtonActive {
+  border-color: rgba(255, 255, 255, 0.9);
+  background: rgba(95, 20, 255, 0.26);
+  color: #fff;
+}
+
+.optionButtonActive:hover,
+.optionButtonActive:focus,
+.optionButtonActive:active {
+  color: #fff;
+}
+
+.questionCustomField {
+  margin-top: 12px;
+}
+
+.otpWrap {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.otpHiddenInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.otpBoxRow {
+  display: flex;
+  gap: 14px;
+}
+
+.otpBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 60px;
+  height: 54px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: text;
+}
+
+.otpCaret {
+  display: inline-block;
+  width: 2px;
+  height: 24px;
+  margin-left: 2px;
+  border-radius: 999px;
+  background: #fff;
+  animation: otpCaretBlink 1s step-end infinite;
+}
+
+@keyframes otpCaretBlink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.otpTimer {
+  margin: 0;
+  color: #ff4040;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 991px) {
+  .area {
+    padding: 32px 0;
+  }
+
+  .shell,
+  .shellWide,
+  .shellCompact {
+    width: min(100%, 92vw);
+    padding: 28px 20px 30px;
+  }
+
+  .roleGrid,
+  .formGrid,
+  .optionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .planGrid {
+    display: block;
+  }
+
+  .checkoutGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkoutSummaryPanel {
+    order: -1;
+  }
+
+  .checkoutPaymentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .roleChoiceGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .roleFooterActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .roleBackRow {
+    justify-content: stretch;
+  }
+
+  .primaryButton {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .checkoutActionRow {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .checkoutPrimaryButton,
+  .checkoutTermsLink {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .checkoutTermsLink {
+    display: inline-flex;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 575px) {
+  .area {
+    padding: 20px 0;
+  }
+
+  .shell,
+  .shellWide,
+  .shellCompact {
+    padding: 24px 18px;
+    border-radius: 24px;
+  }
+
+  .otpBoxRow {
+    gap: 10px;
+  }
+
+  .otpBox {
+    width: 48px;
+    height: 48px;
+  }
+
+  .inlineFooter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .planToolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .planNav {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

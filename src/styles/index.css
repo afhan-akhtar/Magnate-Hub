@@ -1,0 +1,151 @@
+@import "react-toastify/dist/ReactToastify.css";
+@import "react-modal-video/css/modal-video.css";
+@import "swiper/css/bundle";
+
+@import "../../public/assets/css/animate.min.css";
+@import "../../public/assets/css/bootstrap.min.css";
+@import "../../public/assets/css/default.css";
+@import "../../public/assets/css/flatpicker.css";
+@import "../../public/assets/css/fontawesome-all.min.css";
+
+:root {
+  --mh-auth-surface-border: rgba(255, 255, 255, 0.22);
+  --mh-auth-surface-bg:
+    radial-gradient(
+      circle at top right,
+      rgba(251, 184, 77, 0.14),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at center left,
+      rgba(64, 87, 255, 0.16),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(88, 68, 136, 0.62) 0%,
+      rgba(49, 35, 84, 0.62) 100%
+    );
+  --mh-auth-surface-shadow: 0 24px 80px rgba(10, 6, 28, 0.34);
+  --mh-auth-field-bg: rgba(255, 255, 255, 0.08);
+  --mh-auth-field-border: rgba(255, 255, 255, 0.3);
+  --mh-auth-field-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --mh-auth-field-focus: 0 0 0 4px rgba(111, 70, 255, 0.18);
+  --mh-auth-button-bg: linear-gradient(90deg, #5a00ff 0%, #7d12ff 100%);
+}
+
+.mh-auth-page {
+  min-height: 100vh;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.52)),
+    url("/assets/img/banner/banner.png") !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.mh-auth-wrapper {
+  margin-top: 80px;
+  padding: 38px 32px;
+  color: #fff;
+  border: 1px solid var(--mh-auth-surface-border) !important;
+  border-radius: 30px;
+  background: var(--mh-auth-surface-bg) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  box-shadow: var(--mh-auth-surface-shadow) !important;
+}
+
+.mh-auth-heading {
+  margin: 0 0 8px;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.mh-auth-subheading {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.mh-auth-form .mh-auth-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--mh-auth-field-border) !important;
+  border-radius: 14px;
+  background: var(--mh-auth-field-bg) !important;
+  box-shadow: var(--mh-auth-field-shadow);
+  color: #fff !important;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.mh-auth-form .mh-auth-input::placeholder {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.mh-auth-form .mh-auth-input:focus {
+  border-color: rgba(255, 255, 255, 0.55) !important;
+  box-shadow: var(--mh-auth-field-shadow), var(--mh-auth-field-focus);
+}
+
+.mh-auth-form .mh-auth-input:-webkit-autofill,
+.mh-auth-form .mh-auth-input:-webkit-autofill:hover,
+.mh-auth-form .mh-auth-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+  box-shadow:
+    0 0 0 1000px rgba(255, 255, 255, 0.08) inset,
+    var(--mh-auth-field-shadow);
+  transition: background-color 9999s ease-out 0s;
+}
+
+.mh-auth-form .mh-auth-error {
+  margin: 4px 0 0;
+  color: #ff9da8 !important;
+  font-size: 11px;
+}
+
+.mh-auth-form .mh-auth-inline-link,
+.mh-auth-form .mh-auth-nav-link {
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.mh-auth-form .mh-auth-inline-link {
+  text-decoration: none;
+}
+
+.mh-auth-form .mh-auth-nav-link {
+  text-decoration: none;
+}
+
+.mh-auth-form .tg-btn {
+  min-height: 52px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--mh-auth-button-bg);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 16px 36px rgba(90, 0, 255, 0.28);
+}
+
+.mh-auth-form .tg-btn:disabled {
+  opacity: 0.72;
+}
+
+@media (max-width: 575px) {
+  .mh-auth-wrapper {
+    margin-top: 48px;
+    padding: 24px 18px;
+    border-radius: 24px;
+  }
+}

@@ -1,0 +1,66 @@
+.list-desc {
+  font-size: 14px;
+}
+.see-more-btn {
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #560ce3;
+}
+
+.see-more-btn:hover {
+  text-decoration: none;
+}
+/* Custom Scroll */
+
+.customScroll {
+  max-height: 460px; /* adjust as needed */
+  overflow-y: auto;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: #7f3cff transparent;
+  transition: all 0.3s ease;
+}
+
+/* WebKit Scrollbar */
+.customScroll::-webkit-scrollbar {
+  width: 6px;
+  transition: width 0.3s ease;
+}
+
+/* Track */
+.customScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Thumb */
+.customScroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6f00ff, #b06bff);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Hover Animation */
+.customScroll:hover::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #5a00d4, #a25cff);
+  width: 8px;
+}
+
+.customScroll:hover::-webkit-scrollbar {
+  width: 8px;
+}
+
+@media all and (min-width: 769px) and (max-width: 1100px) {
+  .tg-pricing-area br {
+    display: none;
+  }
+  .tg-pricing-su-wrap .tg-pricing-price h2 {
+    font-size: 1.7rem !important;
+  }
+  .tg-pricing-head h4 {
+    font-size: 0.9rem !important;
+  }
+  .tg-pricing-su-wrap .tg-pricing-list ul li {
+    font-size: 14px !important;
+  }
+}

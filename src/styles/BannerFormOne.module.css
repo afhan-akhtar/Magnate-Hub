@@ -1,0 +1,294 @@
+/* BannerFormOne.module.css */
+
+/* outer wrapper */
+.bannerWrapper {
+  width: 100%;
+  padding: 36px 20px;
+  background: linear-gradient(180deg, #0b0b0b 0%, #111111 100%);
+  display: flex;
+  justify-content: center;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+/* inner container (controls width) */
+.container {
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* tabs */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.tabBtn {
+  background: transparent;
+  color: #cfcfcf;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+.tabBtn:hover {
+  transform: translateY(-1px);
+}
+.activeTab {
+  background: linear-gradient(90deg, #141414, #1e1e1e);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+}
+
+/* form layout */
+.form {
+  width: 100%;
+}
+.row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+/* columns */
+.col {
+  flex: 1 1 200px;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* search column should be narrower */
+.searchCol {
+  flex: 0 0 150px;
+  min-width: 120px;
+}
+
+/* label */
+.label {
+  font-size: 12px;
+  color: #bfbfbf;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+/* toggle / input appearance */
+.inputToggle {
+  background: #0f0f0f;
+  padding: 12px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #e6e6e6;
+  user-select: none;
+}
+.inputToggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.02);
+}
+.inputToggle.active {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, #141414, #0f0f0f);
+}
+
+/* icons and values */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0.94;
+}
+.value {
+  flex: 1 1 auto;
+  font-size: 14px;
+  color: #fff;
+}
+.angle {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+}
+
+/* date input */
+.inputDate {
+  display: flex;
+  align-items: center;
+  background: #0f0f0f;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+.flatInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  width: 100%;
+  padding-left: 8px;
+}
+.flatInput::placeholder {
+  color: #9a9a9a;
+}
+
+/* dropdown for locations */
+.dropdown {
+  position: absolute;
+  margin-top: 8px;
+  z-index: 40;
+  background: #0b0b0b;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 10px;
+  display: none;
+  min-width: 220px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+.dropdown.open {
+  display: block;
+}
+.locationList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 180px;
+  overflow: auto;
+}
+.locationList li {
+  padding: 8px 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d6d6d6;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.locationList li:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* guest dropdown specifics */
+.dropdownGuest {
+  position: absolute;
+  margin-top: 8px;
+  z-index: 40;
+  background: #0b0b0b;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 12px;
+  display: none;
+  min-width: 260px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+.dropdownGuest.open {
+  display: block;
+}
+
+.guestItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 4px;
+}
+.guestTitle {
+  font-size: 14px;
+  color: #eaeaea;
+}
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qtyBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  width: 36px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.qtyBtn:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.qtyInput {
+  width: 40px;
+  text-align: center;
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  outline: none;
+}
+
+/* dropdown footer */
+.dropdownFooter {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+.okBtn {
+  background: #222;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+.okBtn:hover {
+  opacity: 0.95;
+}
+
+/* search button */
+.searchBtn {
+  width: 100%;
+  background: linear-gradient(90deg, #ff7a00, #ff4d00);
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255, 77, 0, 0.12);
+}
+.searchBtn:hover {
+  transform: translateY(-1px);
+}
+
+/* responsive */
+@media (max-width: 880px) {
+  .row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .searchCol {
+    width: 100%;
+  }
+  .col {
+    min-width: 100%;
+  }
+  .dropdown,
+  .dropdownGuest {
+    position: relative;
+    width: 100%;
+    margin-top: 6px;
+  }
+}

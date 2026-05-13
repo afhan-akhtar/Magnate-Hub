@@ -1,0 +1,253 @@
+.blogGridArea {
+  padding: 80px 0 60px;
+  background: linear-gradient(
+      180deg,
+      rgba(86, 12, 227, 0.03),
+      rgba(255, 255, 255, 1)
+    ),
+    #f7f7fb;
+}
+
+.blogGridWrap {
+  margin-right: 30px;
+}
+
+@media (max-width: 1199.98px) {
+  .blogGridWrap {
+    margin-right: 0;
+    margin-bottom: 40px;
+  }
+}
+
+.loadingWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 260px;
+}
+
+.sidebarWrapper {
+  position: sticky;
+  top: 90px;
+}
+
+@media (max-width: 991.98px) {
+  .sidebarWrapper {
+    position: static;
+    margin-top: 40px;
+  }
+}
+
+/* Card layout */
+
+.cardCol {
+  display: flex;
+}
+
+.blogCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(12, 18, 38, 0.04);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+  transition: transform 0.22s ease, box-shadow 0.22s ease,
+    border-color 0.22s ease;
+  width: 100%;
+}
+
+.blogCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border-top: 3px solid rgba(86, 12, 227, 0.65);
+  border-bottom: 0;
+  pointer-events: none;
+}
+
+.blogCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 60px rgba(15, 23, 42, 0.12);
+  border-color: rgba(86, 12, 227, 0.22);
+}
+
+/* Thumbnail */
+
+.thumbWrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.thumbInner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px 18px 0 0;
+}
+
+.cardImage {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.blogCard:hover .cardImage {
+  transform: scale(1.06);
+}
+
+.thumbOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.05) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  border-radius: 18px 18px 0 0;
+}
+
+.blogCard:hover .thumbOverlay {
+  opacity: 1;
+}
+
+/* Content */
+
+.cardContent {
+  padding: 18px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cardTitle {
+  font-size: 1.15rem;
+  line-height: 1.4;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.cardTitle:hover {
+  color: #560ce3;
+}
+
+.cardTaxonomy {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.categoryBadge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(86, 12, 227, 0.12);
+  color: #560ce3;
+}
+
+.tagChip {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.emptyList {
+  text-align: center;
+  padding: 48px 20px;
+  color: #64748b;
+  font-size: 1rem;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px dashed rgba(86, 12, 227, 0.2);
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.metaIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Excerpt */
+
+.cardExcerpt {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #4b5563;
+  min-height: 3.9em; /* ~2–3 lines */
+}
+
+/* Footer / Read more */
+
+.cardFooter {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.readMoreLink {
+  text-decoration: none;
+}
+
+/* Pagination */
+
+.paginationWrapper {
+  margin-top: 40px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Responsive tweaks */
+
+@media (max-width: 767.98px) {
+  .blogGridArea {
+    padding: 60px 0 40px;
+  }
+
+  .cardContent {
+    padding: 16px 16px 16px;
+  }
+
+  .cardImage {
+    height: 190px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .cardImage {
+    height: 180px;
+  }
+}

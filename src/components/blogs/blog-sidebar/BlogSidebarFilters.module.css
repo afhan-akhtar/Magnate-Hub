@@ -1,0 +1,158 @@
+.filterBox {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 18px;
+  border: 1px solid rgba(12, 18, 38, 0.06);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+}
+
+.sidebarTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 14px;
+}
+
+.searchForm {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border: 1px solid rgba(86, 12, 227, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  color: #0f172a;
+  outline: none;
+  min-width: 0;
+}
+
+.searchInput::placeholder {
+  color: #94a3b8;
+}
+
+.searchBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border: none;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.searchBtn:hover {
+  background: rgba(86, 12, 227, 0.06);
+}
+
+.categoryList,
+.tagList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.categoryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font-size: 0.9rem;
+  color: #334155;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.categoryRow:hover {
+  background: rgba(86, 12, 227, 0.06);
+}
+
+.categoryRowActive {
+  background: rgba(86, 12, 227, 0.1);
+  border-color: rgba(86, 12, 227, 0.25);
+  color: #560ce3;
+  font-weight: 600;
+}
+
+.categoryName {
+  flex: 1;
+}
+
+.categoryCount {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.tagCloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tagPill {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  border: 1px solid rgba(86, 12, 227, 0.2);
+  color: #475569;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.tagPill:hover {
+  border-color: #560ce3;
+  color: #560ce3;
+}
+
+.tagPillActive {
+  background: #560ce3;
+  border-color: #560ce3;
+  color: #fff;
+}
+
+.showMoreButton {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1px solid rgba(86, 12, 227, 0.3);
+  color: #560ce3;
+  background: rgba(86, 12, 227, 0.06);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.showMoreButton:hover {
+  background: rgba(86, 12, 227, 0.12);
+  border-color: #560ce3;
+}
+
+.emptyHint {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.mb30 {
+  margin-bottom: 30px;
+}

@@ -1,0 +1,82 @@
+.formRoot {
+  padding-top: 4px;
+}
+
+.formRow {
+  row-gap: 10px;
+}
+
+/* Groups & labels */
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 0.85rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.required {
+  color: #dc2626;
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+.optional {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-left: 3px;
+}
+
+/* Inputs */
+
+.input,
+.textarea {
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: #f9fafb;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  color: #111827;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #9ca3af;
+}
+
+.input:focus,
+.textarea:focus {
+  background: #ffffff;
+  border-color: #560ce3;
+  box-shadow: 0 0 0 1px rgba(86, 12, 227, 0.28);
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Validation error text */
+
+.formError {
+  color: #dc2626;
+  font-size: 0.75rem;
+  margin: 2px 0 0;
+}
+
+/* Button area */
+
+.actions {
+  margin-top: 6px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Enhance existing tg-btn */
