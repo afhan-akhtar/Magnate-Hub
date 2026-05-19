@@ -77,27 +77,23 @@ const ArrowRightIcon = ({ className, ...props }: SVGProps<SVGSVGElement>) => (
 export const PremiumListingStyles = () => (
   <style jsx global>{`
     .magnet-premium-card {
-      --gold: #d4a017;
-      --gold-light: #f5d76e;
-      --gold-deep: #9a6700;
-      --ink: #1c1917;
-      --ink-muted: #57534e;
-      --cream: #faf8f5;
+      --purple: #7c3aed;
+      --purple-mid: #6d28d9;
+      --purple-deep: #4c1d95;
+      --purple-soft: #ebe5fa;
+      --purple-tint: #f5efff;
+      --ink: #1e1b4b;
+      --ink-muted: #5b5675;
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
       isolation: isolate;
       position: relative;
-      background: linear-gradient(
-        165deg,
-        #ffffff 0%,
-        #faf8f5 55%,
-        #f5f0e8 100%
-      ) !important;
-      border: 1px solid rgba(212, 160, 23, 0.22) !important;
+      background: #ffffff !important;
+      border: 2px solid rgba(124, 58, 237, 0.35) !important;
       border-radius: 26px !important;
       box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.9) inset,
-        0 22px 50px -18px rgba(28, 25, 23, 0.14),
-        0 6px 20px -8px rgba(154, 103, 0, 0.1) !important;
+        0 1px 0 rgba(255, 255, 255, 1) inset,
+        0 18px 44px -16px rgba(76, 29, 149, 0.18),
+        0 4px 14px -6px rgba(124, 58, 237, 0.12) !important;
       overflow: visible !important;
       padding: 0 !important;
       transition:
@@ -108,15 +104,15 @@ export const PremiumListingStyles = () => (
 
     .magnet-premium-card:hover {
       transform: translateY(-5px);
-      border-color: rgba(212, 160, 23, 0.4) !important;
+      border-color: rgba(124, 58, 237, 0.55) !important;
       box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.95) inset,
-        0 28px 58px -16px rgba(28, 25, 23, 0.18),
-        0 10px 28px -8px rgba(154, 103, 0, 0.16) !important;
+        0 1px 0 rgba(255, 255, 255, 1) inset,
+        0 24px 52px -14px rgba(76, 29, 149, 0.22),
+        0 8px 22px -8px rgba(124, 58, 237, 0.18) !important;
     }
 
     .magnet-premium-card:focus-visible {
-      outline: 2px solid var(--gold);
+      outline: 2px solid var(--purple);
       outline-offset: 3px;
     }
 
@@ -148,24 +144,24 @@ export const PremiumListingStyles = () => (
       border-radius: 50%;
       background: linear-gradient(
         145deg,
-        #fff9e8 0%,
-        #f5d76e 35%,
-        #d4a017 70%,
-        #b8860b 100%
+        #a78bfa 0%,
+        #7c3aed 45%,
+        #6d28d9 75%,
+        #4c1d95 100%
       );
       border: 3px solid #ffffff;
       color: #ffffff;
       box-shadow:
-        0 12px 28px rgba(154, 103, 0, 0.35),
-        0 0 0 1px rgba(212, 160, 23, 0.25),
-        inset 0 2px 4px rgba(255, 255, 255, 0.55);
+        0 12px 28px rgba(76, 29, 149, 0.35),
+        0 0 0 1px rgba(124, 58, 237, 0.2),
+        inset 0 2px 4px rgba(255, 255, 255, 0.4);
       transition: transform 0.35s var(--ease);
     }
 
     .magnet-premium-card__crown-ring svg {
       width: 30px;
       height: 30px;
-      filter: drop-shadow(0 1px 2px rgba(120, 53, 15, 0.35));
+      filter: drop-shadow(0 1px 2px rgba(49, 46, 129, 0.35));
     }
 
     .magnet-premium-card:hover .magnet-premium-card__crown-ring {
@@ -175,16 +171,16 @@ export const PremiumListingStyles = () => (
     .magnet-premium-card__badge-label {
       padding: 4px 12px;
       border-radius: 999px;
-      background: #1c1917;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--gold-light);
+      background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #f5f3ff;
       font-size: 9px;
       font-weight: 800;
       letter-spacing: 0.16em;
       line-height: 1;
       text-transform: uppercase;
       white-space: nowrap;
-      box-shadow: 0 6px 16px rgba(28, 25, 23, 0.2);
+      box-shadow: 0 6px 16px rgba(76, 29, 149, 0.28);
     }
 
     .magnet-premium-card__media {
@@ -280,7 +276,7 @@ export const PremiumListingStyles = () => (
 
     .magnet-premium-card__listing-id {
       margin: 0 0 10px;
-      color: #a8a29e;
+      color: #8b83a8;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.06em;
@@ -312,9 +308,9 @@ export const PremiumListingStyles = () => (
       margin-bottom: 10px;
       padding: 7px 12px;
       border-radius: 10px;
-      background: #f5f0e8;
-      border: 1px solid rgba(212, 160, 23, 0.18);
-      color: #78350f;
+      background: var(--purple-tint);
+      border: 1px solid rgba(124, 58, 237, 0.16);
+      color: var(--purple-deep);
       font-size: 9.5px;
       font-weight: 800;
       letter-spacing: 0.08em;
@@ -362,7 +358,7 @@ export const PremiumListingStyles = () => (
     .magnet-premium-card__footer {
       padding-top: 14px !important;
       margin-top: 10px !important;
-      border-top: 1px solid rgba(28, 25, 23, 0.08) !important;
+      border-top: 1px solid rgba(124, 58, 237, 0.1) !important;
     }
 
     .magnet-premium-card__footer-inner {
@@ -394,11 +390,11 @@ export const PremiumListingStyles = () => (
       border-radius: inherit;
       background: linear-gradient(
         135deg,
-        #fef3c7 0%,
-        #fde68a 45%,
-        #f5d76e 100%
+        #a78bfa 0%,
+        #7c3aed 50%,
+        #6d28d9 100%
       );
-      border: 1px solid rgba(212, 160, 23, 0.35);
+      border: 1px solid rgba(124, 58, 237, 0.25);
     }
 
     .magnet-premium-card__price-text {
@@ -408,7 +404,7 @@ export const PremiumListingStyles = () => (
       font-weight: 900;
       letter-spacing: -0.04em;
       line-height: 1;
-      color: #78350f;
+      color: #ffffff;
     }
 
     .magnet-premium-card__view-details {
@@ -417,8 +413,8 @@ export const PremiumListingStyles = () => (
       gap: 8px;
       padding: 10px 14px;
       border-radius: 12px;
-      background: #1c1917;
-      color: #fafaf9;
+      background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%);
+      color: #ffffff;
       font-size: 12px;
       font-weight: 600;
       white-space: nowrap;
@@ -428,13 +424,13 @@ export const PremiumListingStyles = () => (
     }
 
     .magnet-premium-card:hover .magnet-premium-card__view-details {
-      background: #292524;
+      background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
     }
 
     .magnet-premium-card__view-details svg {
       width: 16px;
       height: 16px;
-      color: var(--gold-light);
+      color: #e9d5ff;
       transition: transform 0.28s var(--ease);
     }
 
@@ -446,7 +442,7 @@ export const PremiumListingStyles = () => (
       .magnet-premium-card:hover .magnet-premium-card__title,
       .home-premium-listing-card:hover .home-premium-listing-title,
       .listing-page-premium-card:hover .listing-page-premium-title {
-        color: var(--gold-deep) !important;
+        color: var(--purple) !important;
       }
     }
 

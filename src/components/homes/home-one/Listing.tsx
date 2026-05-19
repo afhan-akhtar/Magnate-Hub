@@ -498,7 +498,7 @@ const Listing = () => {
         }
 
         .home-premium-tier-card:hover .home-premium-listing-title {
-          color: #9a6700;
+          color: #7c3aed;
         }
       `}</style>
     </div>

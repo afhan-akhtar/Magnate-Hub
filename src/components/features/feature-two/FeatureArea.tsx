@@ -800,7 +800,7 @@ const FeatureArea = ({
           }
 
           .listing-page-premium-card:hover .listing-page-premium-title {
-            color: #9a6700;
+            color: #7c3aed;
           }
         `}</style>
       </div>
