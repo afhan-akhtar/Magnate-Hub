@@ -84,9 +84,25 @@ const LoginForm = () => {
       router.push("/");
     } catch (error: unknown) {
       console.error("Login error:", error);
-      const message =
-        error instanceof Error ? error.message : null;
-      toast.error(message || "Invalid email or password.", {
+      const apiError = error as {
+        status?: number;
+        data?: { message?: string; errors?: Record<string, string[]> };
+      };
+      const status = apiError?.status;
+      const apiMessage =
+        apiError?.data?.message ||
+        apiError?.data?.errors?.email?.[0] ||
+        apiError?.data?.errors?.password?.[0];
+
+      if (status === 419) {
+        toast.error(
+          "Session expired. Please refresh the page and try again.",
+          { position: "top-center" },
+        );
+        return;
+      }
+
+      toast.error(apiMessage || "Invalid email or password.", {
         position: "top-center",
       });
     } finally {

@@ -1,5 +1,5 @@
 "use client";
-import { apiRequest, BACKEND_ORIGIN } from "@/api/axiosInstance";
+import { apiRequest } from "@/api/axiosInstance";
 import {
   createContext,
   useContext,
@@ -131,33 +131,55 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const normalizeLoginResponse = (res: any): AuthResponse => {
+    const data = res?.data ?? res;
+    const user = data?.user ?? res?.user;
+    const token = data?.token ?? res?.token;
+    const failed =
+      res?.error === true ||
+      res?.success === false ||
+      res?.status === false;
+
+    return {
+      ...res,
+      error: failed,
+      user,
+      token,
+      message: res?.message ?? data?.message,
+      redirect: res?.redirect ?? data?.redirect,
+      code: res?.code ?? data?.code,
+    };
+  };
+
   const loginUser = async (
     loginData: LoginData | FormData
   ): Promise<AuthResponse> => {
-    await apiRequest({
-      url: "/sanctum/csrf-cookie",
-      method: "GET",
-      baseURL: BACKEND_ORIGIN,
-      withCredentials: true,
-      withXSRFToken: true,
-      skipAuth: true,
-    });
-
     const payload =
       loginData instanceof FormData ? formDataToObject(loginData) : loginData;
 
-    const res = await apiRequest({
-      url: "/professionals/login",
-      method: "POST",
-      baseURL: BACKEND_ORIGIN,
-      data: payload,
-      withCredentials: true,
-      withXSRFToken: true,
-      skipAuth: true,
-    });
-    if (!res.error) {
+    const rememberRaw = payload.rememberMe;
+    const rememberMe =
+      rememberRaw === true ||
+      rememberRaw === "true" ||
+      rememberRaw === "1";
+
+    const res = normalizeLoginResponse(
+      await apiRequest({
+        url: "login",
+        method: "POST",
+        data: {
+          email: String(payload.email ?? "").trim(),
+          password: String(payload.password ?? ""),
+          rememberMe,
+        },
+        skipAuth: true,
+      }),
+    );
+
+    if (!res.error && res.user?.id) {
       storeDataInLS(res);
     }
+
     return res;
   };
 
