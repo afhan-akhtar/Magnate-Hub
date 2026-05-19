@@ -1,28 +1,7 @@
 "use client";
 import BannerFormOne from "@/components/common/banner-form/BannerFormOne";
 
-type BannerFormProps = {
-  setListing: React.Dispatch<React.SetStateAction<any[]>>;
-  setLocalPagination: React.Dispatch<
-    React.SetStateAction<{
-      totalPage: number;
-      currentPage: number;
-      perPage: number;
-      total: number;
-      nextPageUrl?: string | null;
-      prevPageUrl?: string | null;
-    }>
-  >;
-  currentPage: number;
-  onPageChange: (page: number) => void;
-};
-
-const Banner = ({
-  setListing,
-  setLocalPagination,
-  currentPage = 1,
-  onPageChange,
-}: BannerFormProps) => {
+const Banner = () => {
   return (
     <div
       className="tg-hero-area tg-hero-tu-wrapper include-bg"
@@ -52,12 +31,7 @@ const Banner = ({
               </div>
 
               <div className=" mt-15">
-                <BannerFormOne
-                  setListing={setListing}
-                  setLocalPagination={setLocalPagination}
-                  currentPage={currentPage}
-                  onPageChange={onPageChange}
-                />
+                <BannerFormOne />
               </div>
             </div>
           </div>

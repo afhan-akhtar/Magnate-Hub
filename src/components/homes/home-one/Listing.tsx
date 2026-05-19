@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
 import { addToWishlist } from "@/redux/features/wishlistSlice";
 import type { Product } from "@/redux/features/wishlistSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,18 @@ import Wishlist from "@/svg/home-one/Wishlist";
 import Loading from "@/components/loading/Loading";
 import Location from "@/svg/home-one/Location";
 import Pagination from "@/components/pagination/Pagination";
+import Button from "@/components/common/Button";
+import { BrokerListingCard } from "@/components/BrokerListingCardParts";
+import {
+  isPremiumListing,
+  PremiumListingCard,
+} from "@/components/PremiumListingCardParts";
+import { getListingStatusMode } from "@/lib/listingStatus";
+import {
+  SoldListingCard,
+  UnderOfferListingCard,
+} from "@/components/ListingStatusCardParts";
+
 type ListingItem = {
   id: number;
   url: string;
@@ -22,9 +34,13 @@ type ListingItem = {
   card: string;
   name: string;
   tag?: string;
+  sold?: string | number;
   user_type?: string | number;
   user_company_name?: string;
   user_company_logo?: string;
+  user_first_name?: string;
+  user_last_name?: string;
+  user_image?: string;
   location_name?: string;
   price?: string | number;
   premium?: string | number;
@@ -44,27 +60,17 @@ type RootState = {
   };
 };
 
-type listingProps = {
-  listing: ListingItem[];
-  pagination?: {
-    totalPage: number;
-    currentPage: number;
-    perPage: number;
-    total: number;
-    nextPageUrl?: string | null;
-    prevPageUrl?: string | null;
-  };
-  onPageChange?: (page: number) => void;
-  activePage?: number;
-};
+const PREMIUM_LISTINGS_PER_PAGE = 12;
+/** Fixed card width for home listing slider (matches design ~350–400px) */
+const HOME_LISTING_CARD_WIDTH_PX = 380;
 
-const getListingSliderBreakpoints = (count: number) => ({
-  1400: { slidesPerView: Math.min(count, 4) || 1 },
-  1200: { slidesPerView: Math.min(count, 4) || 1 },
-  992: { slidesPerView: Math.min(count, 3) || 1 },
-  768: { slidesPerView: Math.min(count, 2) || 1 },
-  0: { slidesPerView: 1 },
-});
+const HOME_PREMIUM_SLIDER_OPTIONS = {
+  slidesPerView: "auto" as const,
+  spaceBetween: 22,
+  speed: 900,
+  slidesPerGroup: 1,
+  watchOverflow: true,
+};
 
 const formatListingPrice = (price?: string | number) => {
   return new Intl.NumberFormat("en-US", {
@@ -91,37 +97,23 @@ const truncateText = (value: string, limit: number) => {
   return `${value.slice(0, Math.max(limit - 3, 0)).trimEnd()}...`;
 };
 
-const getCompanyInitials = (value?: string) => {
-  if (!value?.trim()) {
-    return "MH";
-  }
-
-  return value
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part.charAt(0).toUpperCase())
-    .join("");
-};
-
 type ListingCardProps = {
   item: ListingItem;
   isInWishlist: boolean;
   handleAddToWishlist: (item: ListingItem) => void;
   redirectUser: (item: ListingItem) => void;
+  premiumSection?: boolean;
 };
 
-const Listing = ({
-  listing,
-  pagination,
-  onPageChange,
-  activePage,
-}: listingProps) => {
+const Listing = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const swiperRef = useRef<SwiperType | null>(null);
   const [data, setData] = useState<ListingItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAllListings, setShowAllListings] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [categoryData, setCategoryData] = useState<CategoryItem[]>([]);
   const wishlist = useSelector((state: RootState) => state.wishlist.wishlist);
 
@@ -142,32 +134,59 @@ const Listing = ({
     dispatch(addToWishlist(wishlistItem));
   };
 
-  useEffect(() => {
-    if (listing && listing.length > 0) {
-      setData(sortListingsNewestFirst(listing));
-      setLoading(false);
-    } else {
-      setData([]);
-      setLoading(false);
-    }
-  }, [listing]);
-
-  const getCategoryData = async () => {
+  const fetchListings = useCallback(async (page: number, allListings: boolean) => {
+    setLoading(true);
     try {
-      setLoading(true);
+      const url = allListings
+        ? `projects?per_page=${PREMIUM_LISTINGS_PER_PAGE}&page=${page}`
+        : `projects?premium=1&per_page=${PREMIUM_LISTINGS_PER_PAGE}&page=${page}`;
       const response = await apiRequest({
         method: "GET",
-        url: "categories",
+        url,
       });
-      setCategoryData(response?.data || []);
+      const rawResults = response?.data?.data || [];
+      const results = allListings
+        ? rawResults
+        : rawResults.filter(isPremiumListing);
+      setData(sortListingsNewestFirst(results));
+      setTotalPages(response?.data?.last_page || 1);
+      setCurrentPage(response?.data?.current_page || page);
     } catch (error) {
-      console.error("Error fetching location data", error);
+      console.error("Error fetching listings", error);
+      setData([]);
+      setTotalPages(1);
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    fetchListings(currentPage, showAllListings);
+  }, [currentPage, showAllListings, fetchListings]);
+
+  const handleViewAllListings = () => {
+    setShowAllListings(true);
+    setCurrentPage(1);
+  };
+
+  const handleShowPremiumOnly = () => {
+    setShowAllListings(false);
+    setCurrentPage(1);
   };
 
   useEffect(() => {
+    const getCategoryData = async () => {
+      try {
+        const response = await apiRequest({
+          method: "GET",
+          url: "categories",
+        });
+        setCategoryData(response?.data || []);
+      } catch (error) {
+        console.error("Error fetching category data", error);
+      }
+    };
+
     getCategoryData();
   }, []);
 
@@ -194,12 +213,8 @@ const Listing = ({
     );
   };
 
-  const totalPages = pagination?.totalPage || 1;
-  const currentPage =
-    activePage !== undefined ? activePage : pagination?.currentPage || 1;
   const hasMultipleSlides = data.length > 1;
-  const enableLoop = data.length > 3;
-  const listingSliderBreakpoints = getListingSliderBreakpoints(data.length);
+  const enableLoop = data.length > 4;
 
   const isInWishlist = (id: number) => {
     return wishlist.some((item) => item.id === id);
@@ -227,15 +242,46 @@ const Listing = ({
     >
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-lg-6">
-            <div className="tg-listing-section-title-wrap text-center mb-40">
-              <h5 className="tg-section-su-subtitle su-subtitle-2 mb-15">
-                Premium Listings
-              </h5>
-              <h2 className="tg-section-su-title mb-15">
-                Explore our exclusive portfolio of premium listings at Magnate
-                Hub
-              </h2>
+          <div className="col-lg-8 col-xl-7">
+            <div className="tg-listing-section-title-wrap text-center mb-25">
+              {!showAllListings ? (
+                <>
+                  <h5 className="tg-section-su-subtitle su-subtitle-2 mb-15">
+                    Premium Listings
+                  </h5>
+                  <h2 className="tg-section-su-title mb-15">
+                    Explore our exclusive portfolio of premium listings at
+                    Magnate Hub
+                  </h2>
+                </>
+              ) : (
+                <>
+                  <h5 className="tg-section-su-subtitle su-subtitle-2 mb-15 home-all-listings-badge">
+                    All Listings
+                  </h5>
+                  <h2 className="tg-section-su-title mb-15">
+                    Discover businesses, brokers &amp; opportunities ready for
+                    you at Magnate Hub
+                  </h2>
+                </>
+              )}
+              {!showAllListings ? (
+                <button
+                  type="button"
+                  className="tg-btn tg-btn-gray tg-btn-switch-animation home-premium-view-all d-inline-flex"
+                  onClick={handleViewAllListings}
+                >
+                  <Button text="View All Listings" />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="tg-btn tg-btn-gray tg-btn-switch-animation home-premium-view-all d-inline-flex"
+                  onClick={handleShowPremiumOnly}
+                >
+                  <Button text="Show Premium Only" />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -264,23 +310,17 @@ const Listing = ({
             </div>
           </div>
         )}
-      </div>
-
-      <div className="container-fluid p-0">
         <div className="row">
           {loading ? (
             <Loading loadingText={"Loading..."} />
           ) : data.length > 0 ? (
             <div className="col-12">
               <Swiper
+                key={showAllListings ? "all-listings" : "premium-listings"}
+                {...HOME_PREMIUM_SLIDER_OPTIONS}
                 modules={[Autoplay]}
                 className="swiper-container tg-location-su-slider home-premium-listing-slider"
-                spaceBetween={22}
-                speed={900}
-                centeredSlides={true}
-                slidesPerGroup={1}
-                watchOverflow={true}
-                slidesPerView={1}
+                centeredSlides={hasMultipleSlides}
                 loop={enableLoop}
                 rewind={hasMultipleSlides && !enableLoop}
                 autoplay={
@@ -292,7 +332,6 @@ const Listing = ({
                       }
                     : false
                 }
-                breakpoints={listingSliderBreakpoints}
                 onSwiper={(swiper) => {
                   swiperRef.current = swiper;
                 }}
@@ -304,12 +343,13 @@ const Listing = ({
                     style={{ height: "auto" }}
                     onClick={() => redirectUser(item)}
                   >
-                    <div style={{ height: "100%", paddingTop: "12px" }}>
+                    <div className="home-premium-slide-inner">
                       <ListingCard
                         item={item}
                         isInWishlist={isInWishlist(item.id)}
                         handleAddToWishlist={handleAddToWishlist}
                         redirectUser={redirectUser}
+                        premiumSection={!showAllListings}
                       />
                     </div>
                   </SwiperSlide>
@@ -318,7 +358,11 @@ const Listing = ({
             </div>
           ) : (
             <div className="col-12 text-center py-5">
-              <p>No listings found.</p>
+              <p>
+                {showAllListings
+                  ? "No listings found."
+                  : "No premium listings found."}
+              </p>
             </div>
           )}
 
@@ -328,9 +372,7 @@ const Listing = ({
                 <Pagination
                   currentPage={currentPage}
                   totalPages={totalPages}
-                  onPageChange={(page) => {
-                    if (onPageChange) onPageChange(page);
-                  }}
+                  onPageChange={setCurrentPage}
                 />
               </nav>
             </div>
@@ -339,12 +381,60 @@ const Listing = ({
       </div>
 
       <style jsx global>{`
+        .home-premium-view-all {
+          margin-right: 0;
+        }
+
+        .home-all-listings-badge {
+          background: #ebe5fa;
+          color: var(--tg-theme-primary, #7c3aed);
+          display: inline-block;
+          padding: 6px 16px;
+          border-radius: 999px;
+        }
+
         .home-premium-listing-slider {
+          --home-listing-card-width: ${HOME_LISTING_CARD_WIDTH_PX}px;
           overflow: hidden;
+          padding: 0 2px;
         }
 
         .home-premium-listing-slider .swiper-wrapper {
-          padding: 20px 0;
+          padding: 20px 0 8px;
+          align-items: stretch;
+        }
+
+        .home-premium-listing-slider .swiper-slide {
+          width: var(--home-listing-card-width) !important;
+          max-width: min(
+            var(--home-listing-card-width),
+            calc(100vw - 48px)
+          );
+          height: auto;
+          box-sizing: border-box;
+          flex-shrink: 0;
+        }
+
+        .home-premium-slide-inner {
+          height: 100%;
+          padding-top: 12px;
+          width: 100%;
+          max-width: var(--home-listing-card-width);
+          margin: 0 auto;
+        }
+
+        .home-premium-listing-slider .magnet-premium-card,
+        .home-premium-listing-slider .magnet-broker-card,
+        .home-premium-listing-slider .magnet-status-card,
+        .home-premium-listing-slider .home-premium-listing-card {
+          width: 100%;
+          max-width: var(--home-listing-card-width);
+        }
+
+        @media (max-width: 767px) {
+          .home-premium-listing-slider {
+            --home-listing-card-width: 340px;
+          }
         }
 
         .home-premium-listing-wishlist {
@@ -386,6 +476,29 @@ const Listing = ({
             visibility: visible;
             transform: translateX(0);
           }
+
+          .home-premium-broker-card:hover .home-premium-broker-title {
+            color: #4c1d95;
+          }
+
+          .home-premium-broker-card:hover .home-premium-broker-avatar-wrap {
+            transform: translateY(-2px) scale(1.02);
+          }
+        }
+
+        .home-premium-broker-avatar-wrap {
+          transition: transform 0.22s cubic-bezier(0.34, 1.46, 0.64, 1);
+        }
+
+        .home-premium-listing-slider
+          .swiper-slide:has(.home-premium-broker-card),
+        .home-premium-listing-slider
+          .swiper-slide:has(.home-premium-tier-card) {
+          overflow: visible;
+        }
+
+        .home-premium-tier-card:hover .home-premium-listing-title {
+          color: #9a6700;
         }
       `}</style>
     </div>
@@ -397,16 +510,91 @@ const ListingCard = ({
   isInWishlist,
   handleAddToWishlist,
   redirectUser,
+  premiumSection = false,
 }: ListingCardProps) => {
-  const isFranchiseBooker = String(item?.user_type) === "broker";
-  const companyName = item?.user_company_name?.trim() || "";
-  const companyLogoUrl = item?.user_company_logo?.trim()
-    ? item.user_company_logo
-    : "";
-  const companyInitials = getCompanyInitials(companyName);
-  const hasCompanyName = Boolean(companyName);
-  const verificationSource = item?.user_company_name?.trim() || "partner";
-  const listingCode = `MGH-${new Date().getFullYear()}-${item.id}`;
+  const statusMode = getListingStatusMode(item);
+  const statusCardProps = {
+    item,
+    detailHref: `/detail?url=${item.url}&id=${item.project_id}`,
+    isInWishlist,
+    onWishlistClick: (event: MouseEvent) => {
+      event.stopPropagation();
+      handleAddToWishlist(item);
+    },
+    onCardClick: () => redirectUser(item),
+    listingReferenceField: "id" as const,
+    cardClassName: "home-premium-listing-card",
+    wishlistClassName: "tg-listing-item-wishlist home-premium-listing-wishlist",
+    titleClassName: "home-premium-listing-title",
+  };
+
+  if (statusMode === "under_offer") {
+    return <UnderOfferListingCard {...statusCardProps} />;
+  }
+
+  if (statusMode === "sold") {
+    return <SoldListingCard {...statusCardProps} />;
+  }
+
+  if (premiumSection && isPremiumListing(item)) {
+    return (
+      <PremiumListingCard
+        item={item}
+        detailHref={`/detail?url=${item.url}&id=${item.project_id}`}
+        isInWishlist={isInWishlist}
+        onWishlistClick={(event) => {
+          event.stopPropagation();
+          handleAddToWishlist(item);
+        }}
+        onCardClick={() => redirectUser(item)}
+        listingReferenceField="id"
+        cardClassName="home-premium-listing-card home-premium-tier-card"
+        mediaClassName="home-premium-listing-media"
+        wishlistClassName="tg-listing-item-wishlist home-premium-listing-wishlist"
+        titleClassName="home-premium-listing-title"
+      />
+    );
+  }
+
+  if (String(item?.user_type) === "broker") {
+    return (
+      <BrokerListingCard
+        item={item}
+        detailHref={`/detail?url=${item.url}&id=${item.project_id}`}
+        isInWishlist={isInWishlist}
+        onWishlistClick={(event) => {
+          event.stopPropagation();
+          handleAddToWishlist(item);
+        }}
+        onCardClick={() => redirectUser(item)}
+        listingReferenceField="id"
+        cardClassName="home-premium-listing-card home-premium-broker-card"
+        mediaClassName="home-premium-listing-media"
+        wishlistClassName="tg-listing-item-wishlist home-premium-listing-wishlist"
+        titleClassName="home-premium-broker-title"
+      />
+    );
+  }
+
+  if (isPremiumListing(item)) {
+    return (
+      <PremiumListingCard
+        item={item}
+        detailHref={`/detail?url=${item.url}&id=${item.project_id}`}
+        isInWishlist={isInWishlist}
+        onWishlistClick={(event) => {
+          event.stopPropagation();
+          handleAddToWishlist(item);
+        }}
+        onCardClick={() => redirectUser(item)}
+        listingReferenceField="id"
+        cardClassName="home-premium-listing-card home-premium-tier-card"
+        mediaClassName="home-premium-listing-media"
+        wishlistClassName="tg-listing-item-wishlist home-premium-listing-wishlist"
+        titleClassName="home-premium-listing-title"
+      />
+    );
+  }
 
   return (
     <div
@@ -424,15 +612,18 @@ const ListingCard = ({
         border: "1px solid rgba(100, 91, 255, 0.08)",
         boxShadow: "0 18px 50px rgba(50, 38, 120, 0.10)",
         padding: "16px",
-        transition: "transform .18s ease, box-shadow .18s ease",
+        transition:
+          "transform 0.22s cubic-bezier(0.34, 1.46, 0.64, 1), box-shadow 0.22s ease",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-3px)";
-        e.currentTarget.style.boxShadow = "0 24px 60px rgba(50, 38, 120, 0.14)";
+        e.currentTarget.style.transform = "translateY(-4px)";
+        e.currentTarget.style.boxShadow =
+          "0 24px 60px rgba(50, 38, 120, 0.14)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = "translateY(0px)";
-        e.currentTarget.style.boxShadow = "0 18px 50px rgba(50, 38, 120, 0.10)";
+        e.currentTarget.style.boxShadow =
+          "0 18px 50px rgba(50, 38, 120, 0.10)";
       }}
       onClick={() => redirectUser(item)}
     >
@@ -447,67 +638,6 @@ const ListingCard = ({
           borderRadius: "24px",
         }}
       >
-        {isFranchiseBooker && (
-          <div
-            className="home-premium-listing-profile"
-            style={{
-              position: "absolute",
-              left: "16px",
-              top: "12px",
-              zIndex: 8,
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-            }}
-          >
-            <span
-              style={{
-                position: "relative",
-                width: "38px",
-                height: "38px",
-                borderRadius: "999px",
-                overflow: "hidden",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flex: "0 0 auto",
-                background: "linear-gradient(135deg, #6d4cff 0%, #3d73ff 100%)",
-                boxShadow: "0 10px 22px rgba(70, 62, 180, 0.22)",
-              }}
-            >
-              <Image
-                src={companyLogoUrl || "/assets/company-profile.png"}
-                alt={companyName || "Company profile"}
-                fill
-                unoptimized
-                style={{ objectFit: "cover" }}
-              />
-            </span>
-
-            {hasCompanyName && (
-              <span
-                className="home-premium-listing-profile-name"
-                title={companyName}
-                style={{
-                  maxWidth: "180px",
-                  padding: "6px 12px",
-                  borderRadius: "999px",
-                  background: "rgba(15,23,42,0.96)",
-                  color: "#f9fafb",
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  lineHeight: 1.1,
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {companyName}
-              </span>
-            )}
-          </div>
-        )}
-
         <Image
           className="tg-card-border w-100"
           src={`https://dash.magnatehub.au${item.title_image}`}
@@ -594,37 +724,12 @@ const ListingCard = ({
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            backdropFilter: "blur(8px)",
+            backdropFilter: "blur(10px)",
           }}
         >
           {item.category_name}
         </span>
 
-        {isFranchiseBooker && (
-          <span
-            style={{
-              position: "absolute",
-              right: "16px",
-              bottom: "16px",
-              zIndex: 6,
-              padding: "4px 10px",
-              borderRadius: "999px",
-              background:
-                "linear-gradient(180deg, rgba(22, 163, 74, 0.95) 0%, rgba(16, 185, 129, 0.95) 100%)",
-              border: "1px solid rgba(22, 163, 74, 0.95)",
-              color: "#ecfdf3",
-              fontSize: "10px",
-              fontWeight: 700,
-              lineHeight: 1.1,
-              textTransform: "uppercase",
-              letterSpacing: "0.06em",
-              boxShadow: "0 10px 22px rgba(22, 163, 74, 0.33)",
-              backdropFilter: "blur(6px)",
-            }}
-          >
-            verified
-          </span>
-        )}
       </div>
 
       <div
@@ -636,30 +741,6 @@ const ListingCard = ({
           padding: "20px 8px 6px",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "8px",
-            marginBottom: "10px",
-            flexWrap: "wrap",
-            minHeight: "30px",
-          }}
-        >
-          <p
-            style={{
-              fontSize: "12px",
-              color: "#7b8397",
-              margin: 0,
-              letterSpacing: "-0.01em",
-              lineHeight: 1.2,
-            }}
-          >
-            {listingCode}
-          </p>
-        </div>
-
         <h4
           className="tg-listing-card-title"
           style={{
@@ -680,6 +761,7 @@ const ListingCard = ({
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
                 overflow: "hidden",
+                transition: "color 0.15s ease",
               }}
               title={item.name}
             >

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, type MouseEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist } from "@/redux/features/wishlistSlice";
 import { useRouter } from "next/navigation";
@@ -13,6 +13,17 @@ import Image from "next/image";
 import Location from "@/svg/home-one/Location";
 import Link from "next/link";
 import { apiRequest } from "@/api/axiosInstance";
+import { BrokerListingCard } from "@/components/BrokerListingCardParts";
+import {
+  isPremiumListing,
+  PremiumListingCard,
+} from "@/components/PremiumListingCardParts";
+import { getListingStatusMode } from "@/lib/listingStatus";
+import {
+  SoldListingCard,
+  UnderOfferListingCard,
+} from "@/components/ListingStatusCardParts";
+
 
 type FeatureAreaProps = {
   listing: any[];
@@ -55,19 +66,6 @@ const truncateText = (value: string, limit: number) => {
   return `${value.slice(0, Math.max(limit - 3, 0)).trimEnd()}...`;
 };
 
-const getCompanyInitials = (value?: string) => {
-  if (!value?.trim()) {
-    return "MH";
-  }
-
-  return value
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part.charAt(0).toUpperCase())
-    .join("");
-};
-
 type ListingCardSharedProps = {
   item: any;
   detailHref: string;
@@ -83,12 +81,70 @@ const HomeStyleListingCard = ({
   handleAddToWishlist,
   redirectUser,
 }: ListingCardSharedProps) => {
-  const isFranchiseBooker = String(item?.user_type) === "broker";
-  const companyName = item?.user_company_name?.trim() || "";
-  const companyLogoUrl = item?.user_company_logo?.trim()
-    ? item.user_company_logo
-    : "";
-  const hasCompanyName = Boolean(companyName);
+  const statusMode = getListingStatusMode(item);
+  const statusCardProps = {
+    item,
+    detailHref,
+    isInWishlist,
+    onWishlistClick: (event: MouseEvent) => {
+      event.stopPropagation();
+      handleAddToWishlist(item);
+    },
+    onCardClick: () => redirectUser(item),
+    listingReferenceField: "project_id" as const,
+    cardClassName: "listing-page-home-card",
+    wishlistClassName: "tg-listing-item-wishlist listing-page-home-wishlist",
+    titleClassName: "listing-page-premium-title",
+  };
+
+  if (statusMode === "under_offer") {
+    return <UnderOfferListingCard {...statusCardProps} />;
+  }
+
+  if (statusMode === "sold") {
+    return <SoldListingCard {...statusCardProps} />;
+  }
+
+  if (String(item?.user_type) === "broker") {
+    return (
+      <BrokerListingCard
+        item={item}
+        detailHref={detailHref}
+        isInWishlist={isInWishlist}
+        onWishlistClick={(event) => {
+          event.stopPropagation();
+          handleAddToWishlist(item);
+        }}
+        onCardClick={() => redirectUser(item)}
+        listingReferenceField="project_id"
+        cardClassName="listing-page-home-card listing-page-broker-card"
+        mediaClassName="listing-page-home-media"
+        wishlistClassName="tg-listing-item-wishlist listing-page-home-wishlist"
+        titleClassName="listing-page-broker-title"
+      />
+    );
+  }
+
+  if (isPremiumListing(item)) {
+    return (
+      <PremiumListingCard
+        item={item}
+        detailHref={detailHref}
+        isInWishlist={isInWishlist}
+        onWishlistClick={(event) => {
+          event.stopPropagation();
+          handleAddToWishlist(item);
+        }}
+        onCardClick={() => redirectUser(item)}
+        listingReferenceField="project_id"
+        cardClassName="listing-page-home-card listing-page-premium-card"
+        mediaClassName="listing-page-home-media"
+        wishlistClassName="tg-listing-item-wishlist listing-page-home-wishlist"
+        titleClassName="listing-page-premium-title"
+      />
+    );
+  }
+
   const listingCode = `MGH-${new Date().getFullYear()}-${item.project_id}`;
 
   return (
@@ -107,15 +163,18 @@ const HomeStyleListingCard = ({
         border: "1px solid rgba(100, 91, 255, 0.08)",
         boxShadow: "0 18px 50px rgba(50, 38, 120, 0.10)",
         padding: "16px",
-        transition: "transform .18s ease, box-shadow .18s ease",
+        transition:
+          "transform 0.22s cubic-bezier(0.34, 1.46, 0.64, 1), box-shadow 0.22s ease",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-3px)";
-        e.currentTarget.style.boxShadow = "0 24px 60px rgba(50, 38, 120, 0.14)";
+        e.currentTarget.style.transform = "translateY(-4px)";
+        e.currentTarget.style.boxShadow =
+          "0 24px 60px rgba(50, 38, 120, 0.14)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = "translateY(0px)";
-        e.currentTarget.style.boxShadow = "0 18px 50px rgba(50, 38, 120, 0.10)";
+        e.currentTarget.style.boxShadow =
+          "0 18px 50px rgba(50, 38, 120, 0.10)";
       }}
       onClick={() => redirectUser(item)}
     >
@@ -130,67 +189,6 @@ const HomeStyleListingCard = ({
           borderRadius: "24px",
         }}
       >
-        {isFranchiseBooker && (
-          <div
-            className="listing-page-home-profile"
-            style={{
-              position: "absolute",
-              left: "16px",
-              top: "12px",
-              zIndex: 8,
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-            }}
-          >
-            <span
-              style={{
-                position: "relative",
-                width: "38px",
-                height: "38px",
-                borderRadius: "999px",
-                overflow: "hidden",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flex: "0 0 auto",
-                background: "linear-gradient(135deg, #6d4cff 0%, #3d73ff 100%)",
-                boxShadow: "0 10px 22px rgba(70, 62, 180, 0.22)",
-              }}
-            >
-              <Image
-                src={companyLogoUrl || "/assets/company-profile.png"}
-                alt={companyName || "Company profile"}
-                fill
-                unoptimized
-                style={{ objectFit: "cover" }}
-              />
-            </span>
-
-            {hasCompanyName && (
-              <span
-                className="listing-page-home-profile-name"
-                title={companyName}
-                style={{
-                  maxWidth: "180px",
-                  padding: "6px 12px",
-                  borderRadius: "999px",
-                  background: "rgba(15,23,42,0.96)",
-                  color: "#f9fafb",
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  lineHeight: 1.1,
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {companyName}
-              </span>
-            )}
-          </div>
-        )}
-
         <Image
           className="tg-card-border w-100"
           src={`https://dash.magnatehub.au${item.title_image}`}
@@ -208,7 +206,6 @@ const HomeStyleListingCard = ({
             e.currentTarget.src = "assets/img/notfound/image_notfound.png";
           }}
         />
-
         <div
           style={{
             position: "absolute",
@@ -218,7 +215,6 @@ const HomeStyleListingCard = ({
             pointerEvents: "none",
           }}
         />
-
         <div
           className="tg-listing-item-wishlist listing-page-home-wishlist"
           style={{
@@ -259,7 +255,6 @@ const HomeStyleListingCard = ({
             />
           </a>
         </div>
-
         <span
           title={item.category_name}
           style={{
@@ -279,37 +274,11 @@ const HomeStyleListingCard = ({
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            backdropFilter: "blur(8px)",
+            backdropFilter: "blur(10px)",
           }}
         >
           {item.category_name}
         </span>
-
-        {isFranchiseBooker && (
-          <span
-            style={{
-              position: "absolute",
-              right: "16px",
-              bottom: "16px",
-              zIndex: 6,
-              padding: "4px 10px",
-              borderRadius: "999px",
-              background:
-                "linear-gradient(180deg, rgba(22, 163, 74, 0.95) 0%, rgba(16, 185, 129, 0.95) 100%)",
-              border: "1px solid rgba(22, 163, 74, 0.95)",
-              color: "#ecfdf3",
-              fontSize: "10px",
-              fontWeight: 700,
-              lineHeight: 1.1,
-              textTransform: "uppercase",
-              letterSpacing: "0.06em",
-              boxShadow: "0 10px 22px rgba(22, 163, 74, 0.33)",
-              backdropFilter: "blur(6px)",
-            }}
-          >
-            verified
-          </span>
-        )}
       </div>
 
       <div
@@ -329,12 +298,12 @@ const HomeStyleListingCard = ({
             gap: "8px",
             marginBottom: "10px",
             flexWrap: "wrap",
-            minHeight: "24px",
+            minHeight: "30px",
           }}
         >
           <p
             style={{
-              fontSize: "12px",
+              fontSize: "11px",
               color: "#7b8397",
               margin: 0,
               letterSpacing: "-0.01em",
@@ -365,6 +334,7 @@ const HomeStyleListingCard = ({
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
                 overflow: "hidden",
+                transition: "color 0.15s ease",
               }}
               title={item.name}
             >
@@ -446,7 +416,7 @@ const HomeStyleListingCard = ({
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 const ListViewListingCard = ({
@@ -456,6 +426,30 @@ const ListViewListingCard = ({
   handleAddToWishlist,
   redirectUser,
 }: ListingCardSharedProps) => {
+  const statusMode = getListingStatusMode(item);
+  const statusCardProps = {
+    item,
+    detailHref,
+    isInWishlist,
+    onWishlistClick: (event: MouseEvent) => {
+      event.stopPropagation();
+      handleAddToWishlist(item);
+    },
+    onCardClick: () => redirectUser(item),
+    listingReferenceField: "project_id" as const,
+    cardClassName: "listing-page-home-card",
+    wishlistClassName: "tg-listing-item-wishlist listing-page-home-wishlist",
+    titleClassName: "listing-page-premium-title",
+  };
+
+  if (statusMode === "under_offer") {
+    return <UnderOfferListingCard {...statusCardProps} />;
+  }
+
+  if (statusMode === "sold") {
+    return <SoldListingCard {...statusCardProps} />;
+  }
+
   return (
     <div
       className="tg-listing-card-item tg-listing-su-card-item mb-25"
@@ -792,6 +786,21 @@ const FeatureArea = ({
               pointer-events: auto;
               transform: translate(0, 0);
             }
+
+            .listing-page-broker-card:hover .listing-page-broker-title {
+              color: #5b21b6;
+            }
+          }
+
+          .list-card:not(.list-card-open)
+            > .listing-page-grid-col:has(.listing-page-broker-card),
+          .list-card:not(.list-card-open)
+            > .listing-page-grid-col:has(.listing-page-premium-card) {
+            overflow: visible;
+          }
+
+          .listing-page-premium-card:hover .listing-page-premium-title {
+            color: #9a6700;
           }
         `}</style>
       </div>

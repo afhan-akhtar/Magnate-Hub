@@ -5,7 +5,7 @@ import { FaRedo, FaSearch } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 type BannerFormProps = {
-  setListing: React.Dispatch<React.SetStateAction<any[]>>;
+  setListing?: React.Dispatch<React.SetStateAction<any[]>>;
   setLocalPagination?: React.Dispatch<
     React.SetStateAction<{
       totalPage: number;
@@ -310,7 +310,7 @@ const BannerFormOne = ({
       onPageChange(1);
     }
     lastFetchUrl.current = "";
-    setListing([]);
+    setListing?.([]);
     getListingData(1, clearedData, activeTab);
   };
 
@@ -334,7 +334,7 @@ const BannerFormOne = ({
     try {
       const response = await apiRequest({ url: finalUrl, method: "GET" });
       const results = response?.data?.data || [];
-      setListing(results);
+      setListing?.(results);
       if (setLocalPagination) {
         setLocalPagination({
           totalPage: response?.data?.last_page || 1,
@@ -370,6 +370,10 @@ const BannerFormOne = ({
   };
 
   useEffect(() => {
+    if (pathname === "/") {
+      return;
+    }
+
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
@@ -383,6 +387,9 @@ const BannerFormOne = ({
 
 
   useEffect(() => {
+    if (pathname === "/") {
+      return;
+    }
     if (pathname === "/listings" && searchParams && Array.from(searchParams.keys()).length > 0) {
       return;
     }
